@@ -24,11 +24,11 @@
 
         .calculator {
             width: 90%;
-            max-width: 450px;
+            max-width: 420px;
             background: white;
-            padding: 40px;
+            padding: 35px;
             border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
             text-align: center;
         }
 
@@ -36,38 +36,39 @@
             margin-top: 0;
         }
 
-        p {
-            color: #555;
-        }
-
         input {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin: 8px 0;
-            font-size: 16px;
+            font-size: 18px;
             border: 1px solid #ccc;
-            border-radius: 6px;
+            border-radius: 7px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
         }
 
         button {
-            width: 100%;
-            padding: 13px;
-            margin-top: 15px;
+            padding: 15px;
             border: none;
-            border-radius: 6px;
+            border-radius: 7px;
             background: #232f3e;
             color: white;
-            font-size: 16px;
+            font-size: 20px;
             cursor: pointer;
         }
 
         button:hover {
-            opacity: 0.9;
+            opacity: 0.85;
         }
 
         #result {
             margin-top: 25px;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
         }
 
@@ -78,122 +79,144 @@
     </style>
 </head>
 
-
 <body>
 
-    <div class="calculator">
+<div class="calculator">
 
-        <h1>To the Power of Math!</h1>
+    <h1>Calculator</h1>
 
-        <p>Enter a base number and exponent.</p>
+    <input
+        type="number"
+        id="number1"
+        placeholder="Enter first number"
+        step="any"
+    >
 
-        <input
-            type="number"
-            id="base"
-            placeholder="Enter base number"
-        >
+    <input
+        type="number"
+        id="number2"
+        placeholder="Enter second number"
+        step="any"
+    >
 
-        <input
-            type="number"
-            id="exponent"
-            placeholder="Enter exponent"
-        >
+    <div class="buttons">
 
-        <button onclick="calculate()">
-            Calculate
+        <button onclick="calculate('add')">
+            +
         </button>
 
-        <div id="result"></div>
+        <button onclick="calculate('subtract')">
+            −
+        </button>
 
-        <div id="error"></div>
+        <button onclick="calculate('multiply')">
+            ×
+        </button>
+
+        <button onclick="calculate('divide')">
+            ÷
+        </button>
 
     </div>
 
+    <div id="result"></div>
+    <div id="error"></div>
 
-    <script>
-
-        const API_URL =
-            "https://0k86i8xhyk.execute-api.us-east-1.amazonaws.com/dev/calculate";
-
-
-        async function calculate() {
-
-            const base =
-                document.getElementById("base").value;
-
-            const exponent =
-                document.getElementById("exponent").value;
-
-            const resultElement =
-                document.getElementById("result");
-
-            const errorElement =
-                document.getElementById("error");
+</div>
 
 
-            resultElement.textContent = "";
-            errorElement.textContent = "";
+<script>
+
+    const API_URL =
+        "https://0k86i8xhyk.execute-api.us-east-1.amazonaws.com/dev";
 
 
-            if (base === "" || exponent === "") {
+    async function calculate(operation) {
 
-                errorElement.textContent =
-                    "Please enter both numbers.";
+        const number1 =
+            document.getElementById("number1").value;
 
-                return;
+        const number2 =
+            document.getElementById("number2").value;
+
+        const resultElement =
+            document.getElementById("result");
+
+        const errorElement =
+            document.getElementById("error");
+
+
+        resultElement.textContent = "";
+        errorElement.textContent = "";
+
+
+        if (number1 === "" || number2 === "") {
+
+            errorElement.textContent =
+                "Please enter both numbers.";
+
+            return;
+        }
+
+
+        resultElement.textContent =
+            "Calculating...";
+
+
+        try {
+
+            const response = await fetch(
+                API_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        number1: Number(number1),
+                        number2: Number(number2),
+                        operation: operation
+                    })
+                }
+            );
+
+
+            const data = await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error || "Calculation failed."
+                );
             }
+
+
+            let symbol = "";
+
+            if (operation === "add") symbol = "+";
+            if (operation === "subtract") symbol = "−";
+            if (operation === "multiply") symbol = "×";
+            if (operation === "divide") symbol = "÷";
 
 
             resultElement.textContent =
-                "Calculating...";
-
-
-            try {
-
-                const response = await fetch(
-                    API_URL,
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-
-                        body: JSON.stringify({
-                            base: Number(base),
-                            exponent: Number(exponent)
-                        })
-                    }
-                );
-
-
-                const data = await response.json();
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        data.error || "Calculation failed."
-                    );
-                }
-
-
-                resultElement.textContent =
-                    `${base} ^ ${exponent} = ${data.result}`;
-
-            }
-
-            catch (error) {
-
-                resultElement.textContent = "";
-
-                errorElement.textContent =
-                    "Error: " + error.message;
-            }
+                `${number1} ${symbol} ${number2} = ${data.result}`;
 
         }
 
-    </script>
+        catch (error) {
+
+            resultElement.textContent = "";
+
+            errorElement.textContent =
+                error.message;
+        }
+    }
+
+</script>
 
 </body>
 
