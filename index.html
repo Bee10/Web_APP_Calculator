@@ -2,569 +2,868 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Calculator</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>MDS615 Cloud Computing Calculator</title>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
 
+
         body {
+
             margin: 0;
+
             min-height: 100vh;
+
             font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(135deg, #e8eef7, #cfdbea);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e8eef7,
+                    #cbd5e1
+                );
+
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
+
             padding: 45px 20px;
         }
 
+
         .main-heading {
+
             text-align: center;
+
             color: #1f2937;
+
             font-size: 30px;
+
             margin-bottom: 35px;
         }
 
+
         .calculator {
+
             position: relative;
+
             width: 100%;
+
             max-width: 390px;
+
             background: #1f2937;
+
             padding: 25px 25px 55px;
+
             border-radius: 22px;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+
+            box-shadow:
+                0 20px 45px
+                rgba(0, 0, 0, 0.25);
         }
 
+
         .calculator-title {
+
             color: white;
+
             text-align: center;
+
             margin-top: 0;
+
             margin-bottom: 20px;
+
             font-size: 22px;
         }
 
+
         .display {
+
             width: 100%;
-            min-height: 90px;
+
+            min-height: 110px;
+
             background: #111827;
+
             color: white;
+
             border-radius: 12px;
+
             padding: 15px;
+
             margin-bottom: 18px;
+
             display: flex;
+
             flex-direction: column;
-            justify-content: center;
+
+            justify-content: flex-end;
+
             align-items: flex-end;
-            overflow: hidden;
+
+            overflow-x: auto;
         }
+
 
         #expression {
-            font-size: 17px;
-            color: #9ca3af;
-            min-height: 24px;
-        }
 
-        #displayValue {
-            font-size: 36px;
-            font-weight: bold;
+            font-size: 24px;
+
+            min-height: 35px;
+
+            width: 100%;
+
+            text-align: right;
+
             word-break: break-all;
         }
 
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 11px;
+
+        #result {
+
+            margin-top: 8px;
+
+            font-size: 35px;
+
+            font-weight: bold;
+
+            color: #10b981;
+
+            min-height: 42px;
         }
 
+
+        .buttons {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+        }
+
+
         button {
-            height: 65px;
+
+            height: 62px;
+
             border: none;
+
             border-radius: 12px;
-            font-size: 23px;
+
+            font-size: 22px;
+
             font-weight: bold;
+
             cursor: pointer;
+
             transition: 0.15s;
         }
 
+
         button:hover {
+
             transform: translateY(-2px);
         }
 
+
         button:active {
-            transform: scale(0.97);
+
+            transform: scale(0.96);
         }
 
+
         .number {
+
             background: #f9fafb;
+
             color: #111827;
         }
 
+
         .operator {
+
             background: #f59e0b;
+
             color: white;
         }
+
 
         .utility {
+
             background: #6b7280;
+
             color: white;
         }
+
 
         .equals {
+
             background: #10b981;
+
             color: white;
         }
 
+
         .zero {
+
             grid-column: span 2;
         }
 
+
         #message {
-            color: #fca5a5;
+
             text-align: center;
-            margin-top: 15px;
+
+            color: #fca5a5;
+
             min-height: 20px;
+
+            margin-top: 14px;
+
             font-size: 14px;
         }
 
+
         .student-info {
+
             position: absolute;
+
             right: 20px;
+
             bottom: 16px;
+
             color: #cbd5e1;
+
             font-size: 12px;
+
             font-style: italic;
         }
 
+
         @media (max-width: 500px) {
+
             .main-heading {
-                font-size: 23px;
+
+                font-size: 22px;
             }
 
-            .calculator {
-                max-width: 350px;
-            }
 
             button {
-                height: 58px;
-                font-size: 20px;
+
+                height: 55px;
+
+                font-size: 19px;
             }
 
-            #displayValue {
-                font-size: 31px;
-            }
         }
+
     </style>
+
 </head>
 
 
 <body>
 
-    <h1 class="main-heading">
-        Welcome to 2nd Assessment of MDS615 Cloud_Computing and Application_Development
-    </h1>
+
+<h1 class="main-heading">
+
+    Welcome to 2nd Assessment of MDS615 Cloud_Computing & App_Development
+
+</h1>
 
 
-    <div class="calculator">
-
-        <h2 class="calculator-title">
-            AWS Calculator
-        </h2>
+<div class="calculator">
 
 
-        <div class="display">
+    <h2 class="calculator-title">
 
-            <div id="expression"></div>
+        AWS Calculator
 
-            <div id="displayValue">0</div>
-
-        </div>
+    </h2>
 
 
-        <div class="buttons">
+    <div class="display">
 
-            <button class="utility" onclick="clearCalculator()">
-                C
-            </button>
+        <div id="expression">0</div>
 
-            <button class="utility" onclick="backspace()">
-                ⌫
-            </button>
-
-            <button class="utility" onclick="toggleSign()">
-                +/−
-            </button>
-
-            <button class="operator" onclick="chooseOperation('divide')">
-                ÷
-            </button>
-
-
-            <button class="number" onclick="appendNumber('7')">
-                7
-            </button>
-
-            <button class="number" onclick="appendNumber('8')">
-                8
-            </button>
-
-            <button class="number" onclick="appendNumber('9')">
-                9
-            </button>
-
-            <button class="operator" onclick="chooseOperation('multiply')">
-                ×
-            </button>
-
-
-            <button class="number" onclick="appendNumber('4')">
-                4
-            </button>
-
-            <button class="number" onclick="appendNumber('5')">
-                5
-            </button>
-
-            <button class="number" onclick="appendNumber('6')">
-                6
-            </button>
-
-            <button class="operator" onclick="chooseOperation('subtract')">
-                −
-            </button>
-
-
-            <button class="number" onclick="appendNumber('1')">
-                1
-            </button>
-
-            <button class="number" onclick="appendNumber('2')">
-                2
-            </button>
-
-            <button class="number" onclick="appendNumber('3')">
-                3
-            </button>
-
-            <button class="operator" onclick="chooseOperation('add')">
-                +
-            </button>
-
-
-            <button class="number zero" onclick="appendNumber('0')">
-                0
-            </button>
-
-            <button class="number" onclick="appendDecimal()">
-                .
-            </button>
-
-            <button class="equals" onclick="executeCalculation()">
-                =
-            </button>
-
-        </div>
-
-
-        <div id="message"></div>
-
-
-        <div class="student-info">
-            By Birendra Bista - SPI250165
-        </div>
+        <div id="result"></div>
 
     </div>
 
 
-    <script>
-
-        const API_URL =
-            "https://0k86i8xhyk.execute-api.us-east-1.amazonaws.com/dev/calculate";
+    <div class="buttons">
 
 
-        let currentValue = "0";
-        let firstNumber = null;
-        let selectedOperation = null;
-        let waitingForSecondNumber = false;
-        let expressionText = "";
+        <button
+            class="utility"
+            onclick="clearCalculator()">
+
+            C
+
+        </button>
 
 
-        const displayValue =
-            document.getElementById("displayValue");
+        <button
+            class="utility"
+            onclick="backspace()">
 
-        const expression =
-            document.getElementById("expression");
+            ⌫
 
-        const message =
-            document.getElementById("message");
-
-
-        function updateDisplay() {
-
-            displayValue.textContent = currentValue;
-
-            expression.textContent = expressionText;
-        }
+        </button>
 
 
-        function appendNumber(number) {
+        <button
+            class="utility"
+            onclick="appendValue('(')">
 
-            message.textContent = "";
+            (
 
-            if (waitingForSecondNumber) {
+        </button>
 
-                currentValue = number;
-                waitingForSecondNumber = false;
 
-            }
+        <button
+            class="utility"
+            onclick="appendValue(')')">
 
-            else if (currentValue === "0") {
+            )
 
-                currentValue = number;
+        </button>
 
-            }
 
-            else {
 
-                currentValue += number;
+        <button
+            class="number"
+            onclick="appendValue('7')">
 
-            }
+            7
+
+        </button>
+
+
+        <button
+            class="number"
+            onclick="appendValue('8')">
+
+            8
+
+        </button>
+
+
+        <button
+            class="number"
+            onclick="appendValue('9')">
+
+            9
+
+        </button>
+
+
+        <button
+            class="operator"
+            onclick="appendOperator('/')">
+
+            ÷
+
+        </button>
+
+
+
+        <button
+            class="number"
+            onclick="appendValue('4')">
+
+            4
+
+        </button>
+
+
+        <button
+            class="number"
+            onclick="appendValue('5')">
+
+            5
+
+        </button>
+
+
+        <button
+            class="number"
+            onclick="appendValue('6')">
+
+            6
+
+        </button>
+
+
+        <button
+            class="operator"
+            onclick="appendOperator('*')">
+
+            ×
+
+        </button>
+
+
+
+        <button
+            class="number"
+            onclick="appendValue('1')">
+
+            1
+
+        </button>
+
+
+        <button
+            class="number"
+            onclick="appendValue('2')">
+
+            2
+
+        </button>
+
+
+        <button
+            class="number"
+            onclick="appendValue('3')">
+
+            3
+
+        </button>
+
+
+        <button
+            class="operator"
+            onclick="appendOperator('-')">
+
+            −
+
+        </button>
+
+
+
+        <button
+            class="number zero"
+            onclick="appendValue('0')">
+
+            0
+
+        </button>
+
+
+        <button
+            class="number"
+            onclick="appendDecimal()">
+
+            .
+
+        </button>
+
+
+        <button
+            class="operator"
+            onclick="appendOperator('+')">
+
+            +
+
+        </button>
+
+
+
+        <button
+            class="equals"
+            style="grid-column: span 4"
+            onclick="executeCalculation()">
+
+            =
+
+        </button>
+
+
+    </div>
+
+
+    <div id="message"></div>
+
+
+    <div class="student-info">
+
+        By Birendra Bista - SPI250165
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+const API_URL =
+    "https://0k86i8xhyk.execute-api.us-east-1.amazonaws.com/dev/calculate";
+
+
+let expressionValue = "";
+
+let calculationComplete = false;
+
+
+
+const expressionDisplay =
+    document.getElementById("expression");
+
+
+const resultDisplay =
+    document.getElementById("result");
+
+
+const messageDisplay =
+    document.getElementById("message");
+
+
+
+function updateDisplay() {
+
+
+    if (expressionValue === "") {
+
+        expressionDisplay.textContent = "0";
+
+    }
+
+    else {
+
+        const displayExpression =
+            expressionValue
+                .replace(/\*/g, "×")
+                .replace(/\//g, "÷");
+
+
+        expressionDisplay.textContent =
+            displayExpression;
+
+    }
+
+}
+
+
+
+function appendValue(value) {
+
+
+    messageDisplay.textContent = "";
+
+
+    if (calculationComplete) {
+
+        expressionValue = "";
+
+        resultDisplay.textContent = "";
+
+        calculationComplete = false;
+
+    }
+
+
+    expressionValue += value;
+
+
+    updateDisplay();
+
+}
+
+
+
+function appendOperator(operatorValue) {
+
+
+    messageDisplay.textContent = "";
+
+
+    if (expressionValue === "") {
+
+
+        if (operatorValue === "-") {
+
+            expressionValue = "-";
 
             updateDisplay();
+
         }
 
 
-        function appendDecimal() {
+        return;
 
-            message.textContent = "";
+    }
 
-            if (waitingForSecondNumber) {
 
-                currentValue = "0.";
-                waitingForSecondNumber = false;
-                updateDisplay();
+    if (calculationComplete) {
 
-                return;
-            }
 
-            if (!currentValue.includes(".")) {
+        const previousResult =
+            resultDisplay.textContent;
 
-                currentValue += ".";
 
-            }
+        expressionValue =
+            previousResult;
 
-            updateDisplay();
-        }
 
+        resultDisplay.textContent = "";
 
-        function getSymbol(operation) {
+        calculationComplete = false;
 
-            if (operation === "add") return "+";
+    }
 
-            if (operation === "subtract") return "−";
 
-            if (operation === "multiply") return "×";
+    const lastCharacter =
+        expressionValue.slice(-1);
 
-            if (operation === "divide") return "÷";
 
-            return "";
-        }
+    const operators =
+        ["+", "-", "*", "/"];
 
 
-        function chooseOperation(operation) {
+    if (
+        operators.includes(lastCharacter)
+    ) {
 
-            message.textContent = "";
 
-            firstNumber = parseFloat(currentValue);
+        expressionValue =
+            expressionValue.slice(0, -1);
 
-            selectedOperation = operation;
 
-            expressionText =
-                `${currentValue} ${getSymbol(operation)}`;
+    }
 
-            waitingForSecondNumber = true;
 
-            updateDisplay();
-        }
+    expressionValue += operatorValue;
 
 
-        async function executeCalculation() {
+    updateDisplay();
 
-            message.textContent = "";
+}
 
-            if (
-                firstNumber === null ||
-                selectedOperation === null
-            ) {
 
-                message.textContent =
-                    "Please select an operation first.";
 
-                return;
-            }
+function appendDecimal() {
 
 
-            const secondNumber =
-                parseFloat(currentValue);
+    messageDisplay.textContent = "";
 
 
-            if (
-                selectedOperation === "divide" &&
-                secondNumber === 0
-            ) {
+    if (calculationComplete) {
 
-                message.textContent =
-                    "Cannot divide by zero.";
+        expressionValue = "0.";
 
-                return;
-            }
+        resultDisplay.textContent = "";
 
-
-            expressionText =
-                `${firstNumber} ${getSymbol(selectedOperation)} ${secondNumber} =`;
-
-            displayValue.textContent =
-                "Calculating...";
-
-
-            try {
-
-                const response = await fetch(
-                    API_URL,
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-
-                        body: JSON.stringify({
-
-                            number1: firstNumber,
-
-                            number2: secondNumber,
-
-                            operation: selectedOperation
-
-                        })
-                    }
-                );
-
-
-                const data = await response.json();
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        data.error || "Calculation failed."
-                    );
-                }
-
-
-                currentValue =
-                    String(data.result);
-
-                firstNumber = null;
-
-                selectedOperation = null;
-
-                waitingForSecondNumber = false;
-
-                updateDisplay();
-
-            }
-
-            catch (error) {
-
-                displayValue.textContent =
-                    "Error";
-
-                message.textContent =
-                    error.message;
-            }
-        }
-
-
-        function clearCalculator() {
-
-            currentValue = "0";
-
-            firstNumber = null;
-
-            selectedOperation = null;
-
-            waitingForSecondNumber = false;
-
-            expressionText = "";
-
-            message.textContent = "";
-
-            updateDisplay();
-        }
-
-
-        function backspace() {
-
-            if (
-                waitingForSecondNumber ||
-                currentValue === "0"
-            ) {
-
-                return;
-            }
-
-
-            currentValue =
-                currentValue.slice(0, -1);
-
-
-            if (
-                currentValue === "" ||
-                currentValue === "-"
-            ) {
-
-                currentValue = "0";
-
-            }
-
-            updateDisplay();
-        }
-
-
-        function toggleSign() {
-
-            if (currentValue === "0") {
-
-                return;
-            }
-
-
-            if (currentValue.startsWith("-")) {
-
-                currentValue =
-                    currentValue.substring(1);
-
-            }
-
-            else {
-
-                currentValue =
-                    "-" + currentValue;
-
-            }
-
-            updateDisplay();
-        }
-
+        calculationComplete = false;
 
         updateDisplay();
 
-    </script>
+        return;
+    }
+
+
+    const parts =
+        expressionValue.split(
+            /[+\-*/()]/
+        );
+
+
+    const currentNumber =
+        parts[parts.length - 1];
+
+
+    if (
+        !currentNumber.includes(".")
+    ) {
+
+
+        if (
+            currentNumber === ""
+        ) {
+
+            expressionValue += "0.";
+
+        }
+
+        else {
+
+            expressionValue += ".";
+
+        }
+
+    }
+
+
+    updateDisplay();
+
+}
+
+
+
+function clearCalculator() {
+
+
+    expressionValue = "";
+
+    calculationComplete = false;
+
+
+    expressionDisplay.textContent =
+        "0";
+
+
+    resultDisplay.textContent =
+        "";
+
+
+    messageDisplay.textContent =
+        "";
+
+}
+
+
+
+function backspace() {
+
+
+    if (calculationComplete) {
+
+        clearCalculator();
+
+        return;
+
+    }
+
+
+    expressionValue =
+        expressionValue.slice(0, -1);
+
+
+    updateDisplay();
+
+}
+
+
+
+async function executeCalculation() {
+
+
+    messageDisplay.textContent =
+        "";
+
+
+    if (expressionValue === "") {
+
+
+        messageDisplay.textContent =
+            "Please enter a calculation.";
+
+
+        return;
+
+    }
+
+
+    resultDisplay.textContent =
+        "...";
+
+
+    try {
+
+
+        const response =
+            await fetch(
+
+                API_URL,
+
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            expression:
+                                expressionValue
+
+                        })
+
+                }
+
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+
+            throw new Error(
+
+                data.error ||
+                "Calculation failed"
+
+            );
+
+        }
+
+
+        resultDisplay.textContent =
+            data.result;
+
+
+        calculationComplete =
+            true;
+
+
+    }
+
+    catch (error) {
+
+
+        resultDisplay.textContent =
+            "Error";
+
+
+        messageDisplay.textContent =
+            error.message;
+
+    }
+
+}
+
+
+
+updateDisplay();
+
+
+</script>
+
 
 </body>
 
